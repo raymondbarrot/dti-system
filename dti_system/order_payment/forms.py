@@ -10,6 +10,12 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class OrderPaymentItemForm(forms.ModelForm):
+    statuses = [
+        ('NEW', 'NEW'),
+        ('APPROVED',"APPROVED"),
+        ('REJECTED',"REJECTED")
+    ]
+    status = forms.ChoiceField(choices=statuses)
     class Meta:
         model = OrderPaymentItem
         fields = ['payor', 'address', 'fee_type_1', 'fee_type_1_amount', 

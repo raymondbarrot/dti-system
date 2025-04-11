@@ -130,3 +130,4 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGIN_URL = 'login'
+

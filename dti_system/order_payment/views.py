@@ -58,6 +58,7 @@ class AddItem(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.created_by = self.request.user.username
         return super().form_valid(form)
 
 class EditItem(LoginRequiredMixin, UpdateView):
@@ -65,6 +66,11 @@ class EditItem(LoginRequiredMixin, UpdateView):
     form_class = OrderPaymentItemForm
     template_name = 'order_payment/item_form.html'
     success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.last_update_by = self.request.user.username
+        return super().form_valid(form)
 
 class DeleteItem(LoginRequiredMixin, DeleteView):
 	model = OrderPaymentItem
