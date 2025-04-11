@@ -1,6 +1,21 @@
 {% extends 'order_payment/base.html' %}
 
 {% block content %}
+	{% if messages %}
+	<div class="row mt-3">
+		{% for message in messages %}
+			{% if message.tags == 'info' %}
+				<div class="col-md-10 col-12 mx-auto alert alert-danger">
+					{{ message }}
+				</div>
+			{% else %}
+				<div class="col-md-10 col-12 mx-auto alert alert-success">
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}
 	<div class="row">
 		<div class="col-md-10 col-12 mx-auto mt-5">
 			<div class="d-flex justify-content-end">
@@ -16,6 +31,7 @@
 						<th scope="col">Bill No.</th>
                         <th scope="col">Bill Date</th>
                         <th scope="col">Account Number</th>
+						<th scope="col">Status</th>
 						<th scope="col"></th>
 						<th scope="col"></th>
 					</tr>
@@ -31,6 +47,7 @@
 						<td>-</td>
                         <td>-</td>
 						<td>-</td>
+						<td>-</td>
 					</tr>
 					{% endif %}
 
@@ -41,9 +58,14 @@
 						<td>{{ item.total_amount }}</td>
 						<td>{{ item.bill_no }}</td>
                         <td>{{ item.bill_date }}</td>
-						<td>{{ item.bank_details.account_no }}</td>
-						<td><a href="#" class="btn btn-outline-secondary">Edit</a></td>
-						<td><a href="#" class="btn btn-secondary">Delete</a></td>
+						<td>{{ item.account_number }}</td>
+						{% if item.id in new_order_payment_ids %}
+							<td class="text-primary">{{ item.status }}</td>
+						{% else %}
+							<td class="text-success">{{ item.status }}</td>
+						{% endif %}
+						<td><a href="{% url 'edit-item' item.id %}" class="btn btn-outline-secondary">Edit</a></td>
+						<td><a href="{% url 'delete-item' item.id %}" class="btn btn-secondary">Delete</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
