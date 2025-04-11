@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
@@ -59,6 +60,7 @@ class AddItem(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.created_by = self.request.user.username
+        form.instance.serial_number = str(datetime.now().year) + "-" + str(datetime.now().month)
         return super().form_valid(form)
 
 class EditItem(LoginRequiredMixin, UpdateView):
