@@ -60,8 +60,23 @@ class AddItem(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.created_by = self.request.user.username
-        form.instance.serial_number = str(datetime.now().year) + "-" + str(datetime.now().month)
+        form.instance.serial_number = generate_serial()
         return super().form_valid(form)
+    
+def generate_serial():
+        year = datetime.now().year
+        month = datetime.now().month
+        monthly_count = OrderPaymentItem.objects.filter(
+			date__year=year,
+            date__month=month
+		)
+
+        if(monthly_count.count() > 0):
+            last_item = monthly_count.latest('date')
+            last_number = int(last_item.serial_number.split('-')[2])
+            return str(year) + "-" + str(month) + "-" + str(last_number+1).zfill(3)
+        else:
+            return str(year) + "-" + str(month) + "-" + str(1).zfill(3)
 
 class EditItem(LoginRequiredMixin, UpdateView):
     model = OrderPaymentItem

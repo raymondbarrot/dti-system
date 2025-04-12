@@ -16,6 +16,7 @@ class OrderPaymentItemForm(forms.ModelForm):
         ('REJECTED',"REJECTED")
     ]
     status = forms.ChoiceField(choices=statuses)
+    bill_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model = OrderPaymentItem
         fields = ['payor', 'address', 'fee_type_1', 'fee_type_1_amount', 
