@@ -50,3 +50,10 @@ class OrderPaymentItem(models.Model):
 
     def __str__(self):
         return self.serial_number
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    signature = models.ImageField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
