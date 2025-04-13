@@ -19,7 +19,7 @@ class OrderPaymentItemForm(forms.ModelForm):
     bill_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model = OrderPaymentItem
-        fields = ['payor', 'address', 'fee_type_1', 'fee_type_1_amount', 
+        fields = ['serial_number', 'payor', 'address', 'fee_type_1', 'fee_type_1_amount', 
                   'fee_type_2', 'fee_type_2_amount', 'fee_type_3', 'fee_type_3_amount',
                   'dst', 'surcharge', 'total_amount', 'amount_in_words', 
                   'bill_no', 'bill_date', 'status', 'bank_name', 'account_number',

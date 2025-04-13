@@ -60,8 +60,15 @@
 						{% else %}
 							<td class="text-danger">{{ item.status }}</td>
 						{% endif %}
-						<td><a href="{% url 'edit-item' item.id %}" class="btn btn-outline-primary">Edit</a></td>
-						<td><a href="{% url 'delete-item' item.id %}" class="btn btn-primary">Delete</a></td>
+						{% if user.is_staff %}
+							<td><a href="{% url 'view-item' item.id %}" class="btn btn-outline-primary">View</a></td>
+							<td><a href="{% url 'edit-item' item.id %}" class="btn btn-primary">Edit</a></td>
+							<td><a href="{% url 'delete-item' item.id %}" class="btn btn-dark">Delete</a></td>
+						{% else %}
+							<td><a href="{% url 'view-item' item.id %}" class="btn btn-primary">View</a></td>
+							<!-- <td><a href="#" class="btn btn-primary">Print</a></td> -->
+						{% endif %}
+						
 					</tr>
 					{% endfor %}
 				</tbody>

@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import OrderPaymentItem
@@ -94,3 +94,12 @@ class DeleteItem(LoginRequiredMixin, DeleteView):
 	template_name = 'order_payment/delete_item.html'
 	success_url = reverse_lazy('dashboard')
 	context_object_name = 'item'
+
+class ViewItem(LoginRequiredMixin, DetailView):
+    model = OrderPaymentItem
+    template_name = 'order_payment/view_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_payment"] = self.get_object
+        return context
