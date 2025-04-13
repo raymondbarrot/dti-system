@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class OrderPaymentItem(models.Model):
+
     # header
     entity_name = models.CharField(max_length=200, default="Departmenf of Trade and Industry Region IV-A")
     fund_cluster = models.CharField(max_length=200, default="01-Regular Agency Fund")
     serial_number = models.CharField(max_length=200)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     # collecting officer
     collecting_officer = models.CharField(max_length=200, default="Cash/Treasury Unit")
@@ -36,6 +37,8 @@ class OrderPaymentItem(models.Model):
 
     # approver
     acting_accountant = models.CharField(max_length=200)
+
+    # tags
     update_date = models.DateField(auto_now_add=True)
     last_update_by = models.CharField(max_length=200, null=True, blank=True)
     created_by = models.CharField(max_length=200, null=True, blank=True)
