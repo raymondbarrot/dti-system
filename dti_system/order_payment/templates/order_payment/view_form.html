@@ -97,6 +97,14 @@
 						<th scope="row">Status:</th>
 						<td>{{ order_payment.status }}</td>
                     </tr>
+					<tr>
+						<th scope="row">Approved By:</th>
+						<td><img src={{request.user.userprofile.signature.url}} height=100 width=300></img></td>
+                    </tr>
+					<tr>
+						<th scope="row">Acting Accountant</th>
+						<td>Raymond Barrot</td>
+                    </tr>
                 </tbody>
             </table>
             <br />
