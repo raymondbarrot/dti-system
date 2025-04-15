@@ -1,5 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+
+def generate_serial():
+    year = datetime.now().year
+    month = datetime.now().month
+    monthly_count = OrderPaymentItem.objects.filter(
+		date__year=year,
+        date__month=month
+	)
+
+    if(monthly_count.count() > 0):
+        last_item = monthly_count.latest('date')
+        last_number = int(last_item.serial_number.split('-')[2])
+        return str(year) + "-" + str(month) + "-" + str(last_number+1).zfill(3)
+    else:
+        return str(year) + "-" + str(month) + "-" + str(1).zfill(3)
 
 # Create your models here.
 class OrderPaymentItem(models.Model):
@@ -7,7 +23,7 @@ class OrderPaymentItem(models.Model):
     # header
     entity_name = models.CharField(max_length=200, default="Departmenf of Trade and Industry Region IV-A")
     fund_cluster = models.CharField(max_length=200, default="01-Regular Agency Fund")
-    serial_number = models.CharField(max_length=200)
+    serial_number = models.CharField(max_length=200, default=generate_serial)
     date = models.DateTimeField(auto_now_add=True)
 
     # collecting officer
@@ -36,12 +52,15 @@ class OrderPaymentItem(models.Model):
     deposit_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     # approver
-    acting_accountant = models.CharField(max_length=200)
+    acting_accountant = models.CharField(max_length=200, null=True, blank=True)
+    approver_username = models.CharField(max_length=200, null=True, blank=True)
+    signature_url = models.CharField(max_length=500, null=True, blank=True)
 
     # tags
     update_date = models.DateField(auto_now_add=True)
     last_update_by = models.CharField(max_length=200, null=True, blank=True)
     created_by = models.CharField(max_length=200, null=True, blank=True)
+    extra = models.CharField(max_length=500, null=True, blank=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -54,6 +73,9 @@ class OrderPaymentItem(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     signature = models.ImageField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "User Profiles"
 
     def __str__(self):
         return self.user.username
