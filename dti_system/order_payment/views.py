@@ -69,8 +69,12 @@ class EditItem(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
+        oldItem = OrderPaymentItem.objects.get(pk=form.instance.pk)
         form.instance.user = self.request.user
         form.instance.last_update_by = self.request.user.username
+        print("status: " + form.instance.status)
+        print("status old: " + oldItem.status)
+        # print("status old: " + self.kwargs.get('status')) 
         return super().form_valid(form)
 
 class DeleteItem(LoginRequiredMixin, DeleteView):
