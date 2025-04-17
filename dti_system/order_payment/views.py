@@ -72,9 +72,12 @@ class EditItem(LoginRequiredMixin, UpdateView):
         oldItem = OrderPaymentItem.objects.get(pk=form.instance.pk)
         form.instance.user = self.request.user
         form.instance.last_update_by = self.request.user.username
-        print("status: " + form.instance.status)
-        print("status old: " + oldItem.status)
-        # print("status old: " + self.kwargs.get('status')) 
+
+        if form.instance.status != oldItem.status and form.instance.status == 'APPROVED':
+            form.instance.approver_username = self.request.user.username
+            form.instance.signature_url = self.request.user.userprofile.signature.url
+            form.instance.acting_accountant = self.request.user.first_name + " " + self.request.user.last_name
+
         return super().form_valid(form)
 
 class DeleteItem(LoginRequiredMixin, DeleteView):
