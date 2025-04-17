@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import OrderPaymentItem
 from .forms import UserRegisterForm, OrderPaymentItemForm
 from django.contrib import messages
+from num2words import num2words
 
 # Create your views here.
 class Index(TemplateView):
@@ -60,6 +61,27 @@ class AddItem(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.created_by = self.request.user.username
+
+        total = 0
+
+        if form.instance.fee_type_1_amount is not None:
+            total = total + form.instance.fee_type_1_amount
+        
+        if form.instance.fee_type_2_amount is not None:
+            total = total + form.instance.fee_type_2_amount
+        
+        if form.instance.fee_type_3_amount is not None:
+            total = total + form.instance.fee_type_3_amount
+
+        if form.instance.dst is not None:
+            total = total + form.instance.dst
+
+        if form.instance.surcharge is not None:
+            total = total + form.instance.surcharge
+
+        form.instance.total_amount = total
+        form.instance.amount_in_words = num2words(total, to='currency', lang='en', separator=' and', currency='USD')
+
         return super().form_valid(form)
 
 class EditItem(LoginRequiredMixin, UpdateView):

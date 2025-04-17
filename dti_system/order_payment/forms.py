@@ -22,9 +22,8 @@ class OrderPaymentItemForm(forms.ModelForm):
         model = OrderPaymentItem
         fields = ['serial_number','payor', 'address', 'fee_type_1', 'fee_type_1_amount', 
                   'fee_type_2', 'fee_type_2_amount', 'fee_type_3', 'fee_type_3_amount',
-                  'dst', 'surcharge', 'total_amount', 'amount_in_words', 
-                  'bill_no', 'bill_date', 'status', 'bank_name', 'account_number',
-                  'deposit_amount']
+                  'dst', 'surcharge','bill_no', 'bill_date', 'status', 'bank_name', 
+                  'account_number', 'deposit_amount']
         
     def __init__(self, *args, **kwargs):
         super(OrderPaymentItemForm, self).__init__(*args, **kwargs)
