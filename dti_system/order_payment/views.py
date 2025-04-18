@@ -51,6 +51,12 @@ class SignUpView(View):
             return redirect('index')
         
         return render(request, 'order_payment/signup.html', {'form': form})
+
+def num2words_pesos(amount):
+        whole_number, centavos = str(amount).split('.')
+        whole_number_words = num2words(int(whole_number))
+        centavos_words = num2words(int(centavos))
+        return f"{whole_number_words} pesos and {centavos_words} cents"
     
 class AddItem(LoginRequiredMixin, CreateView):
     model = OrderPaymentItem
@@ -80,7 +86,8 @@ class AddItem(LoginRequiredMixin, CreateView):
             total = total + form.instance.surcharge
 
         form.instance.total_amount = total
-        form.instance.amount_in_words = num2words(total, to='currency', lang='en', separator=' and', currency='USD')
+        form.instance.amount_in_words = num2words_pesos(total)
+        # form.instance.amount_in_words = num2words(total, to='currency', lang='en', separator=' and', currency='USD')
 
         return super().form_valid(form)
 
